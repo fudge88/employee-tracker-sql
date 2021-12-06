@@ -4,7 +4,6 @@
   "description": "a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },
   "repository": {
