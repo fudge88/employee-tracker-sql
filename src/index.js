@@ -1,4 +1,7 @@
 const mysql = require("mysql2");
+const inquirer = require("inquirer");
+
+const actionQuestion = require("./lib/questions");
 
 const displayDepartments = () => {
   // execute mysql query
@@ -51,8 +54,10 @@ const connection = {
 const db = mysql.createConnection(connection);
 console.log(`Connected to the company_db database.`);
 
-const start = () => {
+const start = async () => {
   // declare one question with list of actions
+  const action = await inquirer.prompt(actionQuestion);
+  console.log(action);
   // prompt question and get answer (action)
   // insert if blocks for all actions
   // if displayDepartments()
