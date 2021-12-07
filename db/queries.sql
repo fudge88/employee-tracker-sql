@@ -4,21 +4,21 @@ USE company_db;
 SELECT * FROM department;
 
 -- view all roles
-SELECT role.id, role.title, role.salary, department.name FROM role JOIN department ON role.departmentId = department.id ORDER BY department.name;
+SELECT jobRole.id, jobRole.title, jobRole.salary, department.name FROM jobRole JOIN department ON jobRole.departmentId = department.id ORDER BY department.name;
 
 -- view all employees
 SELECT employee_role.firstName, employee_role.lastName, title, salary, name
 FROM employee employee_role 
-LEFT JOIN role 
-ON employee_role.roleId=role.id 
+LEFT JOIN jobRole 
+ON employee_role.roleId=jobRole.id 
 LEFT JOIN department
-ON role.departmentId=department.id;
+ON jobRole.departmentId=department.id;
 
 -- insert department
 INSERT INTO department (name) VALUES ('Finance')
 
--- insert role
-INSERT INTO role (title, salary, departmentId) VALUES ('Junior', 1000, 3)
+-- insert jobRole
+INSERT INTO jobRole (title, salary, departmentId) VALUES ('Junior', 1000, 3)
 
 -- insert employee
 INSERT INTO employee (firstName, lastName, roleId, managerId) VALUES ('Bob', 'Smith', 2, 5)

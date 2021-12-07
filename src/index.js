@@ -1,6 +1,4 @@
-var mysql = require("mysql");
-var inquirer = require("inquirer");
-const cTable = require("console.table");
+const mysql = require("mysql2");
 
 const displayDepartments = () => {
   // execute mysql query
@@ -43,16 +41,15 @@ const constructRoleChoices = (roles) => {
 const constructEmployeeChoices = (roles) => {
   // return an array of employee choices
 };
+const connection = {
+  host: process.envDB_HOST || "localhost",
+  user: process.envDB_USER || "root",
+  password: process.envDB_PASSWORD || "Password123",
+  database: process.envDB_NAME || "company_db",
+};
 
-// const connection = mysql.createConnection(
-//   {
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'Password123',
-//     database: 'company_db',
-//   },
-//   console.log(`Connected to the company_db database.`)
-// );
+const db = mysql.createConnection(connection);
+console.log(`Connected to the company_db database.`);
 
 const start = () => {
   // declare one question with list of actions
