@@ -11,23 +11,23 @@ CREATE TABLE department (
 CREATE TABLE jobRole (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NOT NULL,
-  salary DECIMAL(5,2),
-  department_id INT,
-  FOREIGN KEY (department_id)
+  salary DECIMAL(8,2),
+  departmentId INT,
+  FOREIGN KEY (departmentId)
   REFERENCES department(id)
   ON DELETE SET NULL
 );
 
 CREATE TABLE employee (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(30) NOT NULL,
-  last_name VARCHAR(30) NOT NULL,
-  jobRole_id INT,
-  FOREIGN KEY (jobRole_id)
+  firstName VARCHAR(30) NOT NULL,
+  lastName VARCHAR(30) NOT NULL,
+  jobRoleId INT,
+  FOREIGN KEY (jobRoleId)
   REFERENCES jobRole(id)
   ON DELETE SET NULL,
-  employee_id INT,
-  FOREIGN KEY (employee_id)
+  employeeId INT,
+  FOREIGN KEY (employeeId)
   REFERENCES employee(id)
   ON DELETE SET NULL
 );
