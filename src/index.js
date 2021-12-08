@@ -1,62 +1,20 @@
-// const mysql = require("mysql2");
 const inquirer = require("inquirer");
 
-const actionQuestions = require("./lib/questions");
+const {
+  displayDepartments,
+  displayEmployees,
+  displayRoles,
+  getDepartments,
+  getRoles,
+  getEmployees,
+  constructDepartmentChoices,
+  constructRoleChoices,
+  constructEmployeeChoices,
+} = require("./utils/actions");
 
-const displayDepartments = () => {
-  // execute mysql query
-  `SELECT * FROM department;`;
-  // log/table departments
-};
-
-const displayRoles = () => {
-  // execute mysql query
-  // log/table roles
-};
-
-const displayEmployees = () => {
-  // execute mysql query
-  // log/table employees
-};
-
-const getDepartments = () => {
-  // execute mysql query
-  // return departments
-};
-
-const getRoles = () => {
-  // execute mysql query
-  // return roles
-};
-
-const getEmployees = () => {
-  // execute mysql query
-  // return employees
-};
-
-const constructDepartmentChoices = (departments) => {
-  // return an array of department choices
-};
-
-const constructRoleChoices = (roles) => {
-  // return an array of role choices
-};
-
-const constructEmployeeChoices = (roles) => {
-  // return an array of employee choices
-};
-// const connection = {
-//   host: process.envDB_HOST || "localhost",
-//   user: process.envDB_USER || "root",
-//   password: process.envDB_PASSWORD || "Password123",
-//   database: process.envDB_NAME || "company_db",
-// };
-
-// const db = mysql.createConnection(connection);
-// console.log(`Connected to the company_db database.`);
+const actionQuestions = require("./utils/questions");
 
 const start = async () => {
-  // declare one question with list of actions
   let inProgress = true;
 
   while (inProgress) {
@@ -64,6 +22,7 @@ const start = async () => {
 
     if (chosenAction === "viewEmployee") {
       console.log("viewEmployee");
+      displayEmployees();
     }
 
     if (chosenAction === "addEmployee") {
@@ -75,6 +34,7 @@ const start = async () => {
     }
 
     if (chosenAction === "viewRoles") {
+      displayRoles();
       console.log("viewRoles");
     }
 
@@ -83,6 +43,7 @@ const start = async () => {
     }
 
     if (chosenAction === "viewDepartments") {
+      displayDepartments();
       console.log("viewDepartments");
     }
 
@@ -94,12 +55,7 @@ const start = async () => {
       inProgress = false;
       process.exit(0);
     }
-    // prompt question and get answer (action)
-    // insert if blocks for all actions
-    // if displayDepartments()
-    // if displayRoles()
-    // if displayEmployees()
-    // if ("addDepartment") {
+
     // prompt department questions (name) and get answers
     // construct mysql insert query
     // execute mysql query
