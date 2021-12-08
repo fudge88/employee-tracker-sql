@@ -1,4 +1,4 @@
-const actionQuestion = {
+const actionQuestions = {
   type: "list",
   name: "chosenAction",
   message: "What would you like to do?",
@@ -31,7 +31,11 @@ const actionQuestion = {
       value: "addDepartment",
       name: "Add a new Department",
     },
+    {
+      value: "exit",
+      name: "Exit",
+    },
   ],
 };
 
-module.exports = actionQuestion;
+module.exports = actionQuestions;
