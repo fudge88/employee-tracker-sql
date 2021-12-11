@@ -31,6 +31,15 @@ const generateManagerChoices = (managerFromDB) => {
   });
 };
 
+const generateEmployeeChoices = (employeeFromDB) => {
+  return employeeFromDB.map((employee) => {
+    return {
+      name: employee.firstName + " " + employee.lastName,
+      value: employee.id,
+    };
+  });
+};
+
 const start = async () => {
   const db = new Db({
     host: process.envDB_HOST || "localhost",
@@ -91,7 +100,30 @@ const start = async () => {
     }
 
     if (chosenAction === "updateEmployeeRole") {
-      console.log("updateEmployeeRole");
+      const employee = await db.query("SELECT * FROM employee");
+      const role = await db.query("SELECT * FROM jobRole");
+
+      const updateEmployeeQuestions = [
+        {
+          type: "list",
+          message: "Which employee would you like to update?",
+          name: "id",
+          choices: generateEmployeeChoices(employee),
+        },
+        {
+          type: "list",
+          message:
+            "What role would you like to assign to the selected employee?",
+          name: "jobRoleId",
+          choices: generateRoleChoices(role),
+        },
+      ];
+
+      const { id, jobRoleId } = await inquirer.prompt(updateEmployeeQuestions);
+
+      await db.query(
+        `UPDATE employee SET jobRoleId = ${jobRoleId} WHERE id = ${id}`
+      );
     }
 
     if (chosenAction === "viewRoles") {
