@@ -1,19 +1,34 @@
 const inquirer = require("inquirer");
+
 const Db = require("./utils/db");
-
-const {
-  displayDepartments,
-  displayEmployees,
-  displayRoles,
-  getDepartments,
-  getRoles,
-  getEmployees,
-  constructDepartmentChoices,
-  constructRoleChoices,
-  constructEmployeeChoices,
-} = require("./utils/actions");
-
 const actionQuestions = require("./utils/questions");
+
+const generateDepartmentChoices = (departmentsFromDB) => {
+  return departmentsFromDB.map((department) => {
+    return {
+      name: department.name,
+      value: department.id,
+    };
+  });
+};
+
+const generateRoleChoices = (rolesFromDB) => {
+  return rolesFromDB.map((jobRole) => {
+    return {
+      name: jobRole.name,
+      value: jobRole.title,
+    };
+  });
+};
+
+const generateManagerChoices = (managerFromDB) => {
+  return managerFromDB.map((employee) => {
+    return {
+      name: employee.name,
+      value: employee.firstName + " " + employee.lastName,
+    };
+  });
+};
 
 const start = async () => {
   const db = new Db({
@@ -38,7 +53,41 @@ const start = async () => {
     }
 
     if (chosenAction === "addEmployee") {
-      console.log("addEmployee");
+      const role = await db.query("SELECT * FROM jobRole");
+      const employee = await db.query("SELECT * FROM employee");
+
+      const employeeQuestions = [
+        {
+          type: "input",
+          message: "Please enter employee's first name:",
+          name: "firstName",
+        },
+        {
+          type: "input",
+          message: "Please enter employee's last name:",
+          name: "lastName",
+        },
+        {
+          type: "list",
+          message: "Please select a role:",
+          name: "roleId",
+          choices: generateRoleChoices(role),
+        },
+        {
+          type: "list",
+          message: "Please select a Manager:",
+          name: "managerId",
+          choices: generateManagerChoices(employee),
+        },
+      ];
+
+      const { roleId, firstName, lastName, managerId } = await inquirer.prompt(
+        employeeQuestions
+      );
+
+      await db.query(
+        `INSERT INTO employee (firstName, lastName, roleId, managerId) VALUES("${firstName}", ${lastName}, ${managerId}, ${roleId})`
+      );
     }
 
     if (chosenAction === "updateEmployeeRole") {
@@ -53,7 +102,34 @@ const start = async () => {
     }
 
     if (chosenAction === "addRoles") {
-      console.log("addRoles");
+      const departments = await db.query("SELECT * FROM department");
+
+      const roleQuestions = [
+        {
+          type: "list",
+          message: "Please select a department:",
+          name: "departmentId",
+          choices: generateDepartmentChoices(departments),
+        },
+        {
+          type: "input",
+          message: "Please enter role title:",
+          name: "title",
+        },
+        {
+          type: "input",
+          message: "Please enter role salary:",
+          name: "salary",
+        },
+      ];
+
+      const { departmentId, title, salary } = await inquirer.prompt(
+        roleQuestions
+      );
+
+      await db.query(
+        `INSERT INTO jobRole (title, salary, departmentId) VALUES("${title}", ${salary}, ${departmentId})`
+      );
     }
 
     if (chosenAction === "viewDepartments") {
@@ -64,7 +140,19 @@ const start = async () => {
     }
 
     if (chosenAction === "addDepartment") {
-      console.log("addDepartment");
+      const departmentQuestions = [
+        {
+          type: "input",
+          message: "Please enter new department:",
+          name: "newDepartment",
+        },
+      ];
+
+      const { newDepartment } = await inquirer.prompt(departmentQuestions);
+
+      await db.query(
+        `INSERT INTO department (name) VALUES("${newDepartment}")`
+      );
     }
 
     if (chosenAction === "exit") {

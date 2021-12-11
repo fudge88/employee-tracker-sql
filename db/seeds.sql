@@ -1,3 +1,5 @@
+USE company_db;
+
 -- insert into department
 INSERT INTO department (name) 
 VALUES ('Finance'),
@@ -21,23 +23,23 @@ INSERT INTO jobRole (title, salary, departmentId) VALUES
 
 
 -- insert employee
-INSERT INTO employee (firstName, lastName, roleId, managerId) 
-VALUES ('Bob', 'Smith', 2, 5),
-('Lee', 'Cooper', 2, 5),
-('Fatima', 'Gates', 1, 5),
+INSERT INTO employee (firstName, lastName, jobRoleId, managerId) 
+VALUES ('Bob', 'Smith', 2, NULL),
+('Lee', 'Cooper', 2, 1),
+('Fatima', 'Gates', 3, 2),
 ('Jerry', 'Singh', 5, NULL),
-('Calvin', 'Klein', 4, 5),
-('Debra', 'Norris', 3, 4),
-('Saima', 'Smith', 3, 4),
+('Calvin', 'Klein', 4, 3),
+('Debra', 'Norris', 3, 3),
+('Saima', 'Smith', 3, 2),
 ('Tom', 'Jones', 6, 5),
-('Karen', 'Rodgers', 7, 8),
+('Karen', 'Rodgers', 7, 6),
 ('Omar', 'Brown', 6, 5),
-('Amy', 'Sandlers', 7, 8),
+('Amy', 'Sandlers', 7, 5),
 ('Camron', 'Diaz', 8, 5),
-('Anne', 'McNeil', 9, 10),
-('Tracey', 'Finch', 9, 10),
-('Philip', 'Khan', 9, 10),
-('Steven', 'Bose', 9, 10),
+('Anne', 'McNeil', 9, 5),
+('Tracey', 'Finch', 9, 5),
+('Philip', 'Khan', 9, 5),
+('Steven', 'Bose', 9, 5),
 ('Sarah', 'Chesney', 10, 5),
 ('Amjad', 'Hussein', 1, 5),
 ('Bill', 'Wong', 2, 5),
