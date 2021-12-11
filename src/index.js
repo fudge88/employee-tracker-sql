@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const Db = require("./utils/db");
 
 const {
   displayDepartments,
@@ -15,14 +16,25 @@ const {
 const actionQuestions = require("./utils/questions");
 
 const start = async () => {
+  const db = new Db({
+    host: process.envDB_HOST || "localhost",
+    user: process.envDB_USER || "root",
+    password: process.envDB_PASSWORD || "Password123",
+    database: process.envDB_NAME || "company_db",
+  });
+
+  await db.start();
+
   let inProgress = true;
 
   while (inProgress) {
     const { chosenAction } = await inquirer.prompt(actionQuestions);
 
     if (chosenAction === "viewEmployee") {
-      console.log("viewEmployee");
-      displayEmployees();
+      const employees = await db.query(
+        "SELECT employee.id, employee.firstName, employee.lastName FROM employee"
+      );
+      console.table(employees);
     }
 
     if (chosenAction === "addEmployee") {
@@ -34,8 +46,10 @@ const start = async () => {
     }
 
     if (chosenAction === "viewRoles") {
-      displayRoles();
-      console.log("viewRoles");
+      const roles = await db.query(
+        "SELECT jobRole.id, jobRole.title, jobRole.salary FROM jobRole"
+      );
+      console.table(roles);
     }
 
     if (chosenAction === "addRoles") {
@@ -43,8 +57,10 @@ const start = async () => {
     }
 
     if (chosenAction === "viewDepartments") {
-      displayDepartments();
-      console.log("viewDepartments");
+      const departments = await db.query(
+        "SELECT department.id, department.name FROM department"
+      );
+      console.table(departments);
     }
 
     if (chosenAction === "addDepartment") {

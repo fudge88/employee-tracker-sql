@@ -3,16 +3,6 @@ const cTable = require("console.table");
 
 const { allEmployees, allRoles, allDepartments } = require("./queries");
 
-const connection = {
-  host: process.envDB_HOST || "localhost",
-  user: process.envDB_USER || "root",
-  password: process.envDB_PASSWORD || "Password123",
-  database: process.envDB_NAME || "company_db",
-};
-
-const db = mysql.createConnection(connection);
-console.log(`Connected to the company_db database.`);
-
 const displayDepartments = () => {
   db.query(allDepartments, (err, result) => {
     if (err) throw err;
