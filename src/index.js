@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const cTable = require("console.table");
 
 const Db = require("./utils/db");
 const actionQuestions = require("./utils/questions");
@@ -15,8 +16,8 @@ const generateDepartmentChoices = (departmentsFromDB) => {
 const generateRoleChoices = (rolesFromDB) => {
   return rolesFromDB.map((jobRole) => {
     return {
-      name: jobRole.name,
-      value: jobRole.title,
+      name: jobRole.title,
+      value: jobRole.id,
     };
   });
 };
@@ -24,8 +25,8 @@ const generateRoleChoices = (rolesFromDB) => {
 const generateManagerChoices = (managerFromDB) => {
   return managerFromDB.map((employee) => {
     return {
-      name: employee.name,
-      value: employee.firstName + " " + employee.lastName,
+      name: employee.firstName + " " + employee.lastName,
+      value: employee.id,
     };
   });
 };
@@ -70,7 +71,7 @@ const start = async () => {
         {
           type: "list",
           message: "Please select a role:",
-          name: "roleId",
+          name: "jobRoleId",
           choices: generateRoleChoices(role),
         },
         {
@@ -81,12 +82,11 @@ const start = async () => {
         },
       ];
 
-      const { roleId, firstName, lastName, managerId } = await inquirer.prompt(
-        employeeQuestions
-      );
+      const { jobRoleId, firstName, lastName, managerId } =
+        await inquirer.prompt(employeeQuestions);
 
       await db.query(
-        `INSERT INTO employee (firstName, lastName, roleId, managerId) VALUES("${firstName}", ${lastName}, ${managerId}, ${roleId})`
+        `INSERT INTO employee (firstName, lastName, jobRoleId, managerId) VALUES("${firstName}", "${lastName}", ${jobRoleId}, ${managerId})`
       );
     }
 
