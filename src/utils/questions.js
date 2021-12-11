@@ -1,3 +1,4 @@
+// starter questions
 const actionQuestions = {
   type: "list",
   name: "chosenAction",

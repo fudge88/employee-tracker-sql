@@ -1,9 +1,9 @@
 const inquirer = require("inquirer");
-const cTable = require("console.table");
 
 const Db = require("./utils/db");
 const actionQuestions = require("./utils/questions");
 
+// dynamically generating departments
 const generateDepartmentChoices = (departmentsFromDB) => {
   return departmentsFromDB.map((department) => {
     return {
@@ -13,6 +13,7 @@ const generateDepartmentChoices = (departmentsFromDB) => {
   });
 };
 
+// dynamically generating roles
 const generateRoleChoices = (rolesFromDB) => {
   return rolesFromDB.map((jobRole) => {
     return {
@@ -22,6 +23,7 @@ const generateRoleChoices = (rolesFromDB) => {
   });
 };
 
+// dynamically generating managers
 const generateManagerChoices = (managerFromDB) => {
   return managerFromDB.map((employee) => {
     return {
@@ -31,6 +33,7 @@ const generateManagerChoices = (managerFromDB) => {
   });
 };
 
+// dynamically generating employees
 const generateEmployeeChoices = (employeeFromDB) => {
   return employeeFromDB.map((employee) => {
     return {
@@ -40,6 +43,7 @@ const generateEmployeeChoices = (employeeFromDB) => {
   });
 };
 
+// start function
 const start = async () => {
   const db = new Db({
     host: process.envDB_HOST || "localhost",
@@ -53,15 +57,20 @@ const start = async () => {
   let inProgress = true;
 
   while (inProgress) {
+    // inquirer starter questions
     const { chosenAction } = await inquirer.prompt(actionQuestions);
 
+    // view all employees
     if (chosenAction === "viewEmployee") {
       const employees = await db.query(
-        "SELECT employee.id, employee.firstName, employee.lastName FROM employee"
+        `SELECT CONCAT(e.firstName,' ', e.lastName) AS 'USER', j.title, d.name, j.salary,
+      CONCAT( m.firstName,' ',  m.lastName) AS MANAGER
+      FROM employee AS e JOIN employee AS m ON e.managerId = m.id INNER JOIN jobRole j ON e.jobRoleId = j.id LEFT JOIN department d ON j.departmentId = d.id;`
       );
       console.table(employees);
     }
 
+    // add an employee
     if (chosenAction === "addEmployee") {
       const role = await db.query("SELECT * FROM jobRole");
       const employee = await db.query("SELECT * FROM employee");
@@ -97,8 +106,10 @@ const start = async () => {
       await db.query(
         `INSERT INTO employee (firstName, lastName, jobRoleId, managerId) VALUES("${firstName}", "${lastName}", ${jobRoleId}, ${managerId})`
       );
+      console.log(`Added ${firstName} ${lastName} to the database.`);
     }
 
+    // update an employee
     if (chosenAction === "updateEmployeeRole") {
       const employee = await db.query("SELECT * FROM employee");
       const role = await db.query("SELECT * FROM jobRole");
@@ -124,15 +135,18 @@ const start = async () => {
       await db.query(
         `UPDATE employee SET jobRoleId = ${jobRoleId} WHERE id = ${id}`
       );
+      console.log(`Employee Role has been updated`);
     }
 
+    // view all roles
     if (chosenAction === "viewRoles") {
       const roles = await db.query(
-        "SELECT jobRole.id, jobRole.title, jobRole.salary FROM jobRole"
+        `SELECT jobRole.title, department.name, jobRole.salary FROM jobRole JOIN department ON jobRole.departmentId = department.id ORDER BY department.name;`
       );
       console.table(roles);
     }
 
+    // add a role
     if (chosenAction === "addRoles") {
       const departments = await db.query("SELECT * FROM department");
 
@@ -162,15 +176,18 @@ const start = async () => {
       await db.query(
         `INSERT INTO jobRole (title, salary, departmentId) VALUES("${title}", ${salary}, ${departmentId})`
       );
+      console.log(`Added ${title} to the database`);
     }
 
+    // view all departments
     if (chosenAction === "viewDepartments") {
       const departments = await db.query(
-        "SELECT department.id, department.name FROM department"
+        "SELECT department.name FROM department"
       );
       console.table(departments);
     }
 
+    // add a department
     if (chosenAction === "addDepartment") {
       const departmentQuestions = [
         {
@@ -185,33 +202,14 @@ const start = async () => {
       await db.query(
         `INSERT INTO department (name) VALUES("${newDepartment}")`
       );
+      console.log(`Added ${newDepartment} to the database`);
     }
 
+    // exit app/questions
     if (chosenAction === "exit") {
       inProgress = false;
       process.exit(0);
     }
-
-    // prompt department questions (name) and get answers
-    // construct mysql insert query
-    // execute mysql query
-    // }
-    // if ("addRole") {
-    // get departments from DB
-    // pass the departments to a choice constructor function
-    // prompt question to select department, title, salary and get answers
-    // construct mysql insert query for role
-    // execute mysql query
-    // }
-    // if ("addEmployee") {
-    // get roles from DB
-    // get employees from DB
-    // pass the roles to a choice constructor function
-    // pass the employees to a choice constructor function
-    // prompt question to select role, select manager, first name, last name and get answers
-    // construct mysql insert query for employee
-    // execute mysql query
-    // }
   }
 };
 
