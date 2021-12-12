@@ -2,7 +2,7 @@
 
 A command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL.
 
-![portfolio demo](./assets/img/)
+![portfolio demo](./img/et-demo.gif)
 
 ## Summary
 
@@ -10,9 +10,9 @@ An interface that allow non-developers to easily view and interact with informat
 
 This app was created for a business to keep track of its employees, the user is able to add update and delete as required with controlled commands and prompts. The use of `tables` ensured that the data was displayed in a readable manner.
 
-#### A walk-though video for the app can be viewed [here.](https://drive.google.com/drive/folders/1Z3-xUghfRkOGizXHfOQO7X6_CAET0kaY?usp=sharing)
+#### A walk-though video for the app can be viewed [here.](https://drive.google.com/drive/folders/1DLdF3_-PX2UVMxI8HHDnODS5KMSh4j8a?usp=sharing)
 
-![portfolio demo](./assets/img/questions.gif)
+![portfolio demo](./img/employeeTracker.png)
 
 ## User Story
 
@@ -78,7 +78,7 @@ npm run start
 
 This should start the application, and you will be prompted with questions in the terminal.
 
-![portfolio demo](./assets/img/inquierer.png)
+![portfolio demo](./img/employeeTracker1.png)
 
 ## Tools Used:
 

@@ -63,7 +63,7 @@ const start = async () => {
     // view all employees
     if (chosenAction === "viewEmployee") {
       const employees = await db.query(
-        `SELECT CONCAT(e.firstName,' ', e.lastName) AS 'USER', j.title, d.name, j.salary,
+        `SELECT CONCAT(e.firstName,' ', e.lastName) AS 'EMPLOYEE', j.title AS 'JOB ROLE', d.name AS 'DEPARTMENT', j.salary AS 'SALARY',
       CONCAT( m.firstName,' ',  m.lastName) AS MANAGER
       FROM employee AS e JOIN employee AS m ON e.managerId = m.id INNER JOIN jobRole j ON e.jobRoleId = j.id LEFT JOIN department d ON j.departmentId = d.id;`
       );
@@ -141,7 +141,7 @@ const start = async () => {
     // view all roles
     if (chosenAction === "viewRoles") {
       const roles = await db.query(
-        `SELECT jobRole.title, department.name, jobRole.salary FROM jobRole JOIN department ON jobRole.departmentId = department.id ORDER BY department.name;`
+        `SELECT jobRole.title AS 'JOB ROLE', department.name AS 'DEPARTMENT', jobRole.salary AS 'SALARY' FROM jobRole JOIN department ON jobRole.departmentId = department.id ORDER BY department.name;`
       );
       console.table(roles);
     }
@@ -182,7 +182,7 @@ const start = async () => {
     // view all departments
     if (chosenAction === "viewDepartments") {
       const departments = await db.query(
-        "SELECT department.name FROM department"
+        "SELECT department.name AS 'DEPARTMENT' FROM department"
       );
       console.table(departments);
     }
